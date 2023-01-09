@@ -33,28 +33,43 @@
 	<!-- BCryptPasswordEncoder 객체를 위한 Bean 등록 -->
 	<beans:bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
+	<!-- 파일업로드에 필요한 라이브러리를 업로드 최대 20메가  -->
+	<beans:bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+		<beans:property value="20971520" name="maxUploadSize"/>
+		<beans:property name="defaultEncoding" value="utf-8" />
+	</beans:bean>
+
+
+
 	<!-- Interceptor 설정 -->
-	<beans:bean id="level0Interceptor" class="com.spring.javawspring.interceptor.Level0Interceptor" />
-	<beans:bean id="level4Interceptor" class="com.spring.javawspring.interceptor.Level4Interceptor" />
-	<beans:bean id="level3Interceptor" class="com.spring.javawspring.interceptor.Level3Interceptor" />
-	<interceptors>
-		<interceptor>
-			<mapping path="/admin/**"/>
-			<beans:ref bean="level0Interceptor"/>
-		</interceptor>
-		<interceptor>
-			<mapping path="/member/**"/>
-			<exclude-mapping path="/member/memberLogin"/>
-			<exclude-mapping path="/member/memberLogout"/>
-			<exclude-mapping path="/member/memberJoin"/>
-			<exclude-mapping path="/member/memberIdCheck"/>
-			<exclude-mapping path="/member/memberNickNameCheck"/>
-			<beans:ref bean="level3Interceptor" />
-		</interceptor>
-		<interceptor>
-			<mapping path="/board/boardList"/>
-			<beans:ref bean="level4Interceptor"/>
-		</interceptor>
-	</interceptors>
+	<beans:bean class="com.spring.javawspring.interceptor.Level0Interceptor" id="level0Interceptor"/>
+
+	<beans:bean class="com.spring.javawspring.interceptor.Level3Interceptor" id="level3Interceptor"/>
 	
-</beans:beans>
+	<beans:bean class="com.spring.javawspring.interceptor.Level4Interceptor" id="level4Interceptor"/>
+
+
+	<interceptors>
+			<interceptor>
+				<mapping path="/admin/**"/>
+				<beans:ref bean="level0Interceptor"/>
+			</interceptor>
+			<interceptor>
+				<mapping path="/member/**"/>
+				<exclude-mapping path="/member/memberLogin"/>
+				<exclude-mapping path="/member/memberLogout"/>
+				<exclude-mapping path="/member/memberJoin"/>
+				<exclude-mapping path="/member/memberIdCheck"/>
+				<exclude-mapping path="/member/memberNickNameCheck"/>
+				<exclude-mapping path="/member/memberList"/>
+				<exclude-mapping path="/member/memberPwdSearch"/>
+				<beans:ref bean="level4Interceptor"/>
+			</interceptor>
+		
+			<interceptor>
+				<mapping path="/study/**"/>
+				<mapping path="/member/memberList"/>
+				<beans:ref bean="level3Interceptor"/>
+			</interceptor>
+		</interceptors>
+	</beans:beans>
