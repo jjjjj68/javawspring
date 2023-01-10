@@ -82,6 +82,14 @@ public class MessageController {
 			model.addAttribute("msg", "파일이 업로드 실패");
 			model.addAttribute("url", "study/fileUpload/fileUploadForm");
 		}
+		else if(msgFlag.equals("boardInputOk")) {
+			model.addAttribute("msg", "게시글이 정상적으로 등록되었습니다.");
+			model.addAttribute("url", "board/boardList");
+		}
+		else if(msgFlag.equals("boardInputNo")) {
+			model.addAttribute("msg", "게시글");
+			model.addAttribute("url", "board/boardInput");
+		}
 		
 		
 		return "include/message";

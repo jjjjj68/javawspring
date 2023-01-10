@@ -42,7 +42,7 @@
 	        <a href="#" class="w3-bar-item w3-button">회원정보수정</a>
 	        <a href="${ctp}/member/memberPwdUpdate" class="w3-bar-item w3-button">비밀번호수정</a>
 	        <a href="#" class="w3-bar-item w3-button">회원탈퇴</a>
-	        <a href="#" class="w3-bar-item w3-button">관리자메뉴</a>
+	        <a href="${ctp}/admin/adminMain" class="w3-bar-item w3-button">관리자메뉴</a>
 	      </div>
 	    </div>
     </c:if>

@@ -1,6 +1,7 @@
 package com.spring.javawspring.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,5 +26,6 @@ public interface MemberService {
 	public ArrayList<MemberVO> getTermMemberList(int startIndexNo, int pageSize, String mid);
 
 	public void setMemberPwdUpdate(String mid, String pwd);
+
 
 }

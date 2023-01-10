@@ -13,7 +13,7 @@ public class Level3Interceptor extends HandlerInterceptorAdapter{
 		HttpSession session = request.getSession();
 		int level = session.getAttribute("sLevel")==null? 99 : (int) session.getAttribute("sLevel");
 		
-		if(level < 3) {				
+		if(level > 3) {				
 			RequestDispatcher dispatcher;
 			if(level == 99) {		// 비회원 인 경우 
 				dispatcher = request.getRequestDispatcher("/msg/memberNo");
