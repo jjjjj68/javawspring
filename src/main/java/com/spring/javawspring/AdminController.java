@@ -1,6 +1,9 @@
 package com.spring.javawspring;
 
+import java.io.File;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -73,5 +76,18 @@ public class AdminController {
 		int res = adminService.setMemberLevelCheck(idx,level);
 		
 		return "";
+	}
+
+	// ckeditor폴더의 파일 리스트 보여주기
+	@SuppressWarnings("deprecation")
+	@RequestMapping(value = "/file/fileList", method = RequestMethod.GET)
+	public String fileListGet(HttpServletRequest request, Model model) {
+		String realpath = request.getRealPath("resources/data/ckeditor/");
+		// list() 해당폴더에 들어가있는 리스트정보를 가지고 문자배열로 담아준다.
+		String[] files = new File(realpath).list();
+		
+		model.addAttribute("files",files);
+		
+		return "admin/file/fileList";
 	}
 }

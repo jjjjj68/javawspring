@@ -57,9 +57,9 @@
     }
     
     // 게시글 삭제처리
-    function boDelCheck() {
+    function boardDeletCheck() {
     	let ans = confirm("현 게시글을 삭제하시겠습니까?");
-    	if(ans) location.href = "${ctp}/boardDeleteOk?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}&mid=${vo.mid}";
+    	if(ans) location.href = "${ctp}/board/boardDeleteOk?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}&mid=${vo.mid}";
     }
     
     // 댓글 달기
@@ -160,8 +160,16 @@
             <c:if test="${sSw != '1'}">❤</c:if>
           </a>
           ${vo.good} ,
-          <a href="javascript:goodCheckPlus()">👍</a>
-          <a href="javascript:goodCheckMinus()">👎</a>
+          <a href="javascript:goodCheckPlusMinus(1)">👍</a>
+          <a href="javascript:goodCheckPlusMinus(-1)">👎</a> ,
+          <a href="javascript:goodFlagCheck(${sGFlag})">
+            <c:if test="${sGFlag == '1'}"><font color="red">❤</font></c:if>
+            <c:if test="${sGFlag != '1'}">❤</c:if>(토글) ,
+          </a>
+          <a href="javascript:goodDBCheck(${sGFlag})">
+            <c:if test="${goodVo.goodSw == 'Y'}"><font color="red">❤</font></c:if>
+            <c:if test="${goodVo.goodSw != 'Y'}">❤</c:if>(토글DB)
+          </a>
       </td>
     </tr>
     <tr>
@@ -174,8 +182,8 @@
         <c:if test="${flag != 'search'}">
           <input type="button" value="돌아가기" onclick="location.href='${ctp}/board/boardList?pageSize=${pageSize}&pag=${pag}';" class="btn btn-secondary"/>
 	        <c:if test="${sMid == vo.mid || sLevel == 0}">
-		        <input type="button" value="수정하기" onclick="location.href='${ctp}/boardUpdate?idx=${vo.idx}&pageSize=${pageSize}&pag=${pag}';" class="btn btn-success"/>
-		        <input type="button" value="삭제하기" onclick="boardDelCheck()" class="btn btn-danger"/>
+		        <input type="button" value="수정하기" onclick="location.href='${ctp}/board/boardUpdate?idx=${vo.idx}&pageSize=${pageSize}&pag=${pag}';" class="btn btn-success"/>
+		        <input type="button" value="삭제하기" onclick="boardDeletCheck()" class="btn btn-danger"/>
 	        </c:if>
         </c:if>
       </td>
@@ -187,11 +195,22 @@
 	  <table class="table table-borderless">
 	    <tr>
 	      <td>
+	      <!-- 
 	        <c:if test="${preVo.preIdx != 0}">
 	          👈 <a href="${ctp}/board/boardContent?idx=${preVo.preIdx}&pageSize=${pageSize}&pag=${pag}">이전글 : ${preVo.preTitle}</a><br/>
 	        </c:if>
 	        <c:if test="${nextVo.nextIdx != 0}">
 	          👉 <a href="${ctp}/board/boardContent?idx=${nextVo.nextIdx}&pageSize=${pageSize}&pag=${pag}">다음글 : ${nextVo.nextTitle}</a>
+	        </c:if>
+	        -->
+	        <c:if test="${!empty pnVos[1]}">
+	        	다음글 : <a href="${ctp}/board/boardContent?idx=${pnVos[1].idx}&pageSize=${pageSize}&pag=${pag}">${pnVos[1].title}</a><br/>
+	        </c:if>
+	        <c:if test="${vo.idx < pnVos[0].idx}">
+	        	다음글 : <a href="${ctp}/board/boardContent?idx=${pnVos[0].idx}&pageSize=${pageSize}&pag=${pag}">${pnVos[0].title}</a><br/>
+	        </c:if>
+	        <c:if test="${vo.idx > pnVos[0].idx}">
+	        	이전글 : <a href="${ctp}/board/boardContent?idx=${pnVos[0].idx}&pageSize=${pageSize}&pag=${pag}">${pnVos[0].title}</a><br/>
 	        </c:if>
 	      </td>
 	    </tr>

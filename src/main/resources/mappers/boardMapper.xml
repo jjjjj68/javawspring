@@ -14,14 +14,42 @@
   	select * from board2 where idx = #{idx};
   </select>
   
+  <select id="getBoardGoodCheck" resultType="com.spring.javawspring.vo.GoodVO">
+  	select * from good where partIdx=#{partIdx} and part=#{part} and mid=#{mid};
+  </select>
+
+	<!-- <![CDATA[idx < 10]]> -->
+  <select id="getPrevNext" resultType="com.spring.javawspring.vo.BoardVO">
+  <!-- in 포함하고있는것만 추출해냄 -->
+		select idx,title from board2 where idx in ( 
+		(select idx from board2 where <![CDATA[idx < #{idx}]]> order by idx desc limit 1),
+		(select idx from board2 where <![CDATA[idx > #{idx}]]> limit 1));
+  </select>
+  
+  
   
   <insert id="setBoardInput">
   	insert into board2 values (default,#{vo.nickName},#{vo.title},#{vo.email},#{vo.homePage},#{vo.content},default,#{vo.hostIp},default,default,#{vo.mid});
   </insert>
   
   
+  
+  
   <update id="setBoardReadNum">
   	update board2 set readNum = readNum + 1 where idx = #{idx};
   </update>
+
+  <update id="setBoardUpdateOk">
+  	update board2 set title = #{vo.title}, homePage = #{vo.homePage}, content = #{vo.content}, hostIp = #{vo.hostIp} where idx = #{vo.idx};
+  </update>
+  
+  
+  
+  
+  <delete id="setBoardDeleteOk">
+  	delete from board2 where idx = #{idx};
+  </delete>
+  
+  
   
 </mapper>
