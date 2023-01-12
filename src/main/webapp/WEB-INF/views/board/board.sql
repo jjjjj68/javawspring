@@ -30,14 +30,16 @@ create table boardReply2 (
   wDate		 datetime default now(),		/* 댓글 올린 날짜 */
   hostIp	 varchar(50) not null,			/* 댓글올린 PC의 IP */
   content  text not null,							/* 댓글 내용 */
+  level int not null default 0,				/* 댓글레벨 - 첫번째댓글(부모댓글)의 레벨은 0번 */
+  levelOrder int not null default 0,			/* 댓글의순서 첫번째댓글(부모댓글)의 levelOrder는 0*/
   primary key(idx),
-  foreign key(boardIdx) references board(idx)
+  foreign key(boardIdx) references board2(idx)
   /* on update cascade */
   /* on delete restrict */
 );
 desc boardReply2;
 
-
+select * from boardReply2;
 
 /* 날짜함수 처리 연습 */
 select now();		-- now() : 오늘 '날짜와 시간'을 보여준다.

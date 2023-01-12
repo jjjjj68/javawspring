@@ -16,6 +16,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.spring.javawspring.dao.BoardDAO;
+import com.spring.javawspring.vo.BoardReplyVO;
 import com.spring.javawspring.vo.BoardVO;
 import com.spring.javawspring.vo.GoodVO;
 
@@ -46,8 +47,23 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
+	public void setBoardGoodPlus(int idx) {
+		boardDAO.setBoardGoodPlus(idx);
+	}
+
+	@Override
+	public void setGoodPlusMinus(int idx, int goodCnt) {
+		boardDAO.setGoodPlusMinus(idx, goodCnt);
+	}
+
+	@Override
+	public void boardGoodFlagCheck(int idx, int gFlag) {
+		boardDAO.boardGoodFlagCheck(idx, gFlag);
+	}
+
+	@Override
 	public GoodVO getBoardGoodCheck(int partIdx, String part, String mid) {
-		return boardDAO.getBoardGoodCheck(partIdx,part,mid);
+		return boardDAO.getBoardGoodCheck(partIdx, part, mid);
 	}
 
 	@Override
@@ -57,10 +73,10 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public void imgCheck(String content) {
-		//        0         1         2         3         4         5         6
-		//        01234567890123456789012345678901234567890123456789012345678901234567890
-		//<p><img src="/javawspring/data/ckeditor/230111121344_230110164054_new.gif" style="height:18px; width:40px" /></p>
-		// content안에 그림파일이 존재할때만 작업을 수행 할수 있도록 한다.(src="/______)
+		//      0         1         2         3         4         5         6
+		//      01234567890123456789012345678901234567890123456789012345678901234567890
+		// <img src="/javawspring/data/ckeditor/230111121324_green2209J_06.jpg" style="height:967px; width:1337px" /></p>
+// content안에 그림파일이 존재할때만 작업을 수행 할수 있도록 한다.(src="/_____~~)
 		if(content.indexOf("src=\"/") == -1) return;
 		
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
@@ -76,7 +92,7 @@ public class BoardServiceImpl implements BoardService {
 			String origFilePath = uploadPath + imgFile;
 			String copyFilePath = uploadPath + "board/" + imgFile;
 			
-			fileCopyCheck(origFilePath, copyFilePath);		// board폴더에 파일을 복사하고자 한다.
+			fileCopyCheck(origFilePath, copyFilePath);  // board폴더에 파일을 복사하고자 한다.
 			
 			if(nextImg.indexOf("src=\"/") == -1) {
 				sw = false;
@@ -117,10 +133,10 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public void imgDelete(String content) {
-		//        0         1         2         3         4         5         6
-		//        01234567890123456789012345678901234567890123456789012345678901234567890
-		//<p><img src="/javawspring/data/ckeditor/board/230111121344_230110164054_new.gif" style="height:18px; width:40px" /></p>
-		// content안에 그림파일이 존재할때만 작업을 수행 할수 있도록 한다.(src="/______)
+		//      0         1         2         3         4         5         6
+		//      01234567890123456789012345678901234567890123456789012345678901234567890
+		// <img src="/javawspring/data/ckeditor/board/230111121324_green2209J_06.jpg" style="height:967px; width:1337px" /></p>
+		// content안에 그림파일이 존재할때만 작업을 수행 할수 있도록 한다.(src="/_____~~)
 		if(content.indexOf("src=\"/") == -1) return;
 		
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
@@ -131,11 +147,11 @@ public class BoardServiceImpl implements BoardService {
 		boolean sw = true;
 		
 		while(sw) {
-			String imgFile = nextImg.substring(0, nextImg.indexOf("\""));  // 그림파일명 꺼내오기
+			String imgFile = nextImg.substring(0, nextImg.indexOf("\""));	// 그림파일명 꺼내오기
 			
 			String origFilePath = uploadPath + imgFile;
 			
-			fileDelete(origFilePath);		// board폴더에 파일을 복사하고자 한다.
+			fileDelete(origFilePath);  // board폴더에 파일을 삭제하고자 한다.
 			
 			if(nextImg.indexOf("src=\"/") == -1) {
 				sw = false;
@@ -149,6 +165,7 @@ public class BoardServiceImpl implements BoardService {
 	private void fileDelete(String origFilePath) {
 		File delFile = new File(origFilePath);
 		if(delFile.exists()) delFile.delete();
+		
 	}
 
 	@Override
@@ -188,7 +205,50 @@ public class BoardServiceImpl implements BoardService {
 	public void setBoardUpdateOk(BoardVO vo) {
 		boardDAO.setBoardUpdateOk(vo);
 	}
-	
-	
-	
+
+	@Override
+	public void setGoodDBInput(GoodVO goodVo) {
+		boardDAO.setGoodDBInput(goodVo);
+	}
+
+	@Override
+	public void setGoodDBDelete(int idx) {
+		boardDAO.setGoodDBDelete(idx);
+	}
+
+	@Override
+	public void setGoodUpdate(int idx, int item) {
+		boardDAO.setGoodUpdate(idx, item);
+	}
+
+	@Override
+	public void setBoardReplyInput(BoardReplyVO replyVo) {
+		boardDAO.setBoardReplyInput(replyVo);
+	}
+
+	@Override
+	public List<BoardReplyVO> getBoardReply(int idx) {
+		return boardDAO.getBoardReply(idx);
+	}
+
+	@Override
+	public void setBoardReplyDeleteOk(int idx) {
+		boardDAO.setBoardReplyDeleteOk(idx);
+	}
+
+	@Override
+	public String getMaxLevelOrder(int boardIdx) {
+		return boardDAO.getMaxLevelOrder(boardIdx);
+	}
+
+	@Override
+	public void setLevelOrderPlusUpdate(BoardReplyVO replyVo) {
+		boardDAO.setLevelOrderPlusUpdate(replyVo);
+	}
+
+	@Override
+	public void setBoardReplyInput2(BoardReplyVO replyVo) {
+		boardDAO.setBoardReplyInput2(replyVo);
+	}
+
 }
