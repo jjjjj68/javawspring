@@ -109,6 +109,11 @@ public class MemberServiceImpl implements MemberService {
 		memberDAO.setMemberPwdUpdate(mid, pwd);
 	}
 
+	@Override
+	public void setMemberListDeletOk(MemberVO vo) {
+		memberDAO.setMemberListDeletOk(vo);
+	}
+
 
 	
 }

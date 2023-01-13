@@ -254,7 +254,7 @@ public class MemberController {
 	public String memberListGet(Model model,
 			@RequestParam(name="mid", defaultValue = "", required = false) String mid,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
-			@RequestParam(name="pageSize", defaultValue = "3", required = false) int pageSize) {
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize) {
 		
 		PageVO pageVo = pageProcess.totRecCnt(pag, pageSize, "member", "", "");
 		
@@ -339,6 +339,7 @@ public class MemberController {
 	public String memberPwdUpdateGet() {
 		return "member/memberPwdUpdate";
 	}
+	
 	// 비밀번호 변경하기 처리
 	@RequestMapping(value = "/memberPwdUpdate", method = RequestMethod.POST)
 	public String memberPwdUpdatePost(String mid,String pwd) {
@@ -346,4 +347,14 @@ public class MemberController {
 		
 		return "redirect:/msg/memberPwdUpdate";
 	}
+
+	// 회원리스트 삭제하기
+	@ResponseBody
+	@RequestMapping(value = "/memberListDeletOk", method = RequestMethod.POST)
+	public String memberListDeletOkPost(MemberVO vo) {
+		
+		memberService.setMemberListDeletOk(vo);		
+		return "";
+	}
+	
 }

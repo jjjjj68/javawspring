@@ -28,4 +28,6 @@ public interface MemberDAO {
 
 	public int totRecCnt();
 
+	public void setMemberListDeletOk(@Param("vo") MemberVO vo);
+
 }

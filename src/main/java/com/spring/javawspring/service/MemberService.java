@@ -27,5 +27,7 @@ public interface MemberService {
 
 	public void setMemberPwdUpdate(String mid, String pwd);
 
+	public void setMemberListDeletOk(MemberVO vo);
+
 
 }
