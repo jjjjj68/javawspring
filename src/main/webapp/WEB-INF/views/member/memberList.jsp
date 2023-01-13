@@ -60,7 +60,6 @@
     
     // 회원리스트 삭제하기
     function delCheck(idx) {
-			// 삭제해줄땐 항상 물어봐주기    	
     	let ans = confirm("회원을 삭제하시겠습니까?");
     	if(!ans) return false;
     	
