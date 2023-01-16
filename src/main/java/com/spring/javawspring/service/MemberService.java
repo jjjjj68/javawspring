@@ -1,7 +1,6 @@
 package com.spring.javawspring.service;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,9 +16,9 @@ public interface MemberService {
 
 	public void setMemberVisitProcess(MemberVO vo);
 
-	public int totRecCnt();
+//	public int totRecCnt();
 
-	public ArrayList<MemberVO> getMemberList(int startIndexNo, int pageSize);
+	public ArrayList<MemberVO> getMemberList(int startIndexNo, int pageSize, String mid);
 
 	public int totTermRecCnt(String mid);
 
@@ -27,7 +26,14 @@ public interface MemberService {
 
 	public void setMemberPwdUpdate(String mid, String pwd);
 
-	public void setMemberListDeletOk(MemberVO vo);
+	public int setMemberUpdateOk(MultipartFile fName, MemberVO vo);
 
+	public void setMemberDeleteOk(String mid);
+
+	public MemberVO getMemberNickNameEmailCheck(String nickName, String email);
+
+	public void setKakaoMemberInputOk(String mid, String pwd, String nickName, String email);
+
+	public void setMemberUserDelCheck(String mid);
 
 }

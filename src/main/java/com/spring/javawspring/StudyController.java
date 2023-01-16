@@ -216,7 +216,7 @@ public class StudyController {
 	@RequestMapping(value = "/mail/mailForm", method=RequestMethod.GET)
 	public String mailFormGet(Model model, String email) {
 		
-		ArrayList<MemberVO> vos = memberService.getMemberList(0, 1000);
+		ArrayList<MemberVO> vos = memberService.getMemberList(0, 1000, email);
 		model.addAttribute("vos", vos);
 		model.addAttribute("cnt", vos.size());
 		model.addAttribute("email", email);

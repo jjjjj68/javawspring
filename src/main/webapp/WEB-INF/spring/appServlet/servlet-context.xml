@@ -66,6 +66,7 @@
 				<exclude-mapping path="/member/memberNickNameCheck"/>
 				<exclude-mapping path="/member/memberList"/>
 				<exclude-mapping path="/member/memberPwdSearch"/>
+				<exclude-mapping path="/member/memberKakaoLogin"/>
 				<beans:ref bean="level4Interceptor"/>
 			</interceptor>
 		

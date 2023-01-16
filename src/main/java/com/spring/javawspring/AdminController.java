@@ -59,7 +59,7 @@ public class AdminController {
 		
 		PageVO pageVo = pageProcess.totRecCnt(pag, pageSize, "member", "", mid);
 		
-		List<MemberVO> vos = memberService.getMemberList(pageVo.getStartIndexNo(), pageSize);
+		List<MemberVO> vos = memberService.getMemberList(pageVo.getStartIndexNo(), pageSize, mid);
 		
 		model.addAttribute("vos", vos);
 		model.addAttribute("pageVo", pageVo);
