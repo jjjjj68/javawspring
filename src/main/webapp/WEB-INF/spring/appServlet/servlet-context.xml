@@ -44,38 +44,42 @@
 
 
 	<!-- Interceptor 설정 -->
-	<beans:bean class="com.spring.javawspring.interceptor.Level0Interceptor" id="level0Interceptor"/>
-
-	<beans:bean class="com.spring.javawspring.interceptor.Level3Interceptor" id="level3Interceptor"/>
-	
-	<beans:bean class="com.spring.javawspring.interceptor.Level4Interceptor" id="level4Interceptor"/>
-
-
+	<beans:bean id="level0Interceptor" class="com.spring.javawspring.interceptor.Level0Interceptor" />
+	<beans:bean id="level2Interceptor" class="com.spring.javawspring.interceptor.Level2Interceptor" />
+	<beans:bean id="level3Interceptor" class="com.spring.javawspring.interceptor.Level3Interceptor" />
+	<beans:bean id="level4Interceptor" class="com.spring.javawspring.interceptor.Level4Interceptor" />
 	<interceptors>
-			<interceptor>
-				<mapping path="/admin/**"/>
-				<beans:ref bean="level0Interceptor"/>
-			</interceptor>
-			<interceptor>
-				<mapping path="/member/**"/>
-				<mapping path="/board/boardList"/>
-				<exclude-mapping path="/member/memberLogin"/>
-				<exclude-mapping path="/member/memberLogout"/>
-				<exclude-mapping path="/member/memberJoin"/>
-				<exclude-mapping path="/member/memberIdCheck"/>
-				<exclude-mapping path="/member/memberNickNameCheck"/>
-				<exclude-mapping path="/member/memberList"/>
-				<exclude-mapping path="/member/memberPwdSearch"/>
-				<exclude-mapping path="/member/memberKakaoLogin"/>
-				<beans:ref bean="level4Interceptor"/>
-			</interceptor>
-		
-			<interceptor>
-				<mapping path="/study/**"/>
-				<mapping path="/board/**"/>
-				<mapping path="/member/memberList"/>
-				<exclude-mapping path="/board/boardList"/>
-				<beans:ref bean="level3Interceptor"/>
-			</interceptor>
-		</interceptors>
+		<interceptor>
+			<mapping path="/admin/**"/>
+			<beans:ref bean="level0Interceptor" />
+		</interceptor>
+		<interceptor>
+			<mapping path="/member/**"/>
+			<mapping path="/board/boardList"/>
+			<exclude-mapping path="/member/memberLogin"/>
+			<exclude-mapping path="/member/memberLogout"/>
+			<exclude-mapping path="/member/memberJoin"/>
+			<exclude-mapping path="/member/memberIdCheck"/>
+			<exclude-mapping path="/member/memberNickNameCheck"/>
+			<exclude-mapping path="/member/memberList"/>
+			<exclude-mapping path="/member/memberPwdSearch"/>
+			<exclude-mapping path="/member/memberKakaoLogin"/>
+			<beans:ref bean="level4Interceptor" />
+		</interceptor>
+		<interceptor>
+			<mapping path="/study/**"/>
+			<mapping path="/board/**"/>
+			<mapping path="/member/memberList"/>
+			<mapping path="/pds/pdsList"/>
+			<mapping path="/pds/pdsTotalDown"/>
+			<exclude-mapping path="/board/boardList"/>
+			<beans:ref bean="level3Interceptor" />
+		</interceptor>
+		<interceptor>
+			<mapping path="/pds/**"/>
+			<exclude-mapping path="/pds/pdsList"/>
+			<exclude-mapping path="/pds/pdsTotalDown"/>
+			<beans:ref bean="level2Interceptor" />
+		</interceptor>
+	</interceptors>
 	</beans:beans>

@@ -9,6 +9,7 @@ import java.util.UUID;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -308,7 +310,27 @@ public class StudyController {
 		return "study/calendar/calendar";
 	}
 	
+	// QR Code 작성 폼
+	@RequestMapping(value = "/qrCode", method = RequestMethod.GET)
+	public String qrCodeGet(HttpSession session, Model model) {
+		String mid = (String) session.getAttribute("sMid");
+		MemberVO vo = memberService.getMemberIdCheck(mid);
+		
+		model.addAttribute("vo", vo);
+		
+		return "study/qrCode/qrCode";
+	}
 	
-	
-	
+//QR Code 생성하기
+	@ResponseBody
+	@RequestMapping(value = "/qrCode", method = RequestMethod.POST)
+	public String qrCodePost(HttpServletRequest request,
+			@RequestParam(name="mid", defaultValue = "",required = false) String mid, 
+		@RequestParam(name="moveFlag", defaultValue = "",required = false) String moveFlag) {
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/qrCode/");
+		
+		String qrCodeName = studyService.qrCreate(mid, moveFlag, realPath);
+		
+		return qrCodeName;
+	}
 }

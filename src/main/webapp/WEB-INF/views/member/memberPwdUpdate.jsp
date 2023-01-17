@@ -4,11 +4,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>memberPwdUpdate.jsp</title>
-	<jsp:include page="/WEB-INF/views/include/bs4.jsp"></jsp:include>
-</head>
-<script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>memPwdCheck.jsp</title>
+  <jsp:include page="/WEB-INF/views/include/bs4.jsp"></jsp:include>
+  <script>
   	'use strict';
     function fCheck() {
     	let pwd = document.getElementById("pwd").value;
@@ -22,17 +22,24 @@
     	}
     }
   </script>
+</head>
 <body>
 <jsp:include page="/WEB-INF/views/include/nav.jsp" />
 <jsp:include page="/WEB-INF/views/include/slide2.jsp" />
 <p><br/></p>
 <div class="container">
-  <form name="myform" method="post" class="was-validated">
-	  <h2 class="text-center">비밀번호 확인</h2>
+  <c:if test="${flag == 'pwdCheck'}">
+    <h2 class="text-center">비밀번호 확인</h2>
+	  <form name="myform" method="post" action="${ctp}/member/memberPwdCheck" class="was-validated">
+  </c:if>
+  <c:if test="${flag != 'pwdCheck'}">
+    <h2 class="text-center">비밀번호 변경</h2>
+	  <form name="myform" method="post" class="was-validated">
+  </c:if>
 	  <br/>
 	  <table class="table table-bordered">
 	    <tr>
-	      <th>비밀번호</th>
+	      <th><c:if test="${empty param.flag}">새 </c:if>비밀번호</th>
 	      <td>
 	        <input type="password" name="pwd" id="pwd" autofocus required class="form-control"/>
 	        <div class="invalid-feedback">비밀번호를 입력하세요.</div>

@@ -13,5 +13,9 @@ public interface PdsService {
 	public void setPdsInput(MultipartHttpServletRequest file, PdsVO vo);
 
 	public void setPdsDownNum(int idx);
+
+	public PdsVO getPdsContent(int idx);
+
+	public void setPdsDelete(PdsVO vo);
 	
 }

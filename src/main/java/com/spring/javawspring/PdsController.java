@@ -1,6 +1,18 @@
 package com.spring.javawspring;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -83,5 +95,111 @@ public class PdsController {
 		return "pds/pdsInput";
 	}
 	
+	// pds 내용 삭제처리(삭제처리하기전에 비밀번호를 먼저 체크하여 맞으면 삭제처리한다)
+	@ResponseBody
+	@RequestMapping(value = "/pdsDelete", method = RequestMethod.POST)
+	public String pdsDeletePost(int idx, String fSName, String pwd) {
+		//SecurityUtil를 static로 선언하였기에 메소드 영역에 올라가 있다. 
+		//이때는 클래스명으로 호출해서 사용함
+		//SecurityUtil security = new SecurityUtil();  
+		pwd = SecurityUtil.encryptSHA256(pwd);
+		
+		PdsVO vo = pdsService.getPdsContent(idx);
+		if(!pwd.equals(vo.getPwd())) return "0";
+		
+		// 비밀번호가 맞으면 파일 삭제후 DB의 내역을 삭제처리한다.
+		pdsService.setPdsDelete(vo);
+		
+		return "1";
+	}
+	
+	@RequestMapping(value = "/pdsTotalDown", method = RequestMethod.GET)
+	public String pdsTotalDownGet(HttpServletRequest request, int idx) throws IOException {
+		// 파일 압축다운로드전에 다운로드수를 증가시킨다.
+		pdsService.setPdsDownNum(idx);
+		
+		// 여러개의 파일일 경우 모든 파일을 하나의 파일로 압축(?=통합)하여 다운한다! 
+		// 이때 압축화일명은 '제목' 으로 처리한다.
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/pds/");
+		
+		PdsVO vo = pdsService.getPdsContent(idx);
+		
+		String[] fNames = vo.getFName().split("/");
+		String[] fSNames = vo.getFSName().split("/");
+		
+		// 파일명, 확장자 지정
+		String zipPath = realPath + "temp/"; //앞에 스레쉬있음
+		String zipName = vo.getTitle() + ".zip"; 
+		
+		FileInputStream fis = null;
+		FileOutputStream fos = null;
+		
+		ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(zipPath + zipName));
+		
+		byte[] buffer = new byte[2048];
+		
+		for(int i=0; i<fSNames.length; i++) {
+			fis = new FileInputStream(realPath + fSNames[i]);
+			fos = new FileOutputStream(zipPath + fNames[i]);
+			File moveAndRename = new File(zipPath + fNames[i]);
+		
+			// fos에 파일 쓰기작업
+			int data;
+			while((data =fis.read(buffer, 0, buffer.length)) != -1) {
+				fos.write(buffer, 0, data);
+			}
+			fos.flush();
+			fos.close();
+			fis.close();
+			
+			//zip파일에 fos를 넣는 작업
+			fis = new FileInputStream(moveAndRename);
+			zout.putNextEntry(new ZipEntry(fNames[i])); // 파일 껍데기 만듬
+			
+			// 자료 넣기
+			while((data =fis.read(buffer, 0, buffer.length)) != -1) {
+				zout.write(buffer, 0, data);
+			}
+			zout.flush();
+			zout.closeEntry();
+			fis.close();
+		}
+		zout.close();
+		
+		//url 인코딩해줘야함 한글이 깨질수잇음
+		return "redirect:/pds/pdsDownAction?file="+java.net.URLEncoder.encode(zipName);
+	}
+	
+
+	@RequestMapping(value = "/pdsDownAction", method = RequestMethod.GET)
+	public void pdsDownActionGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String file = request.getParameter("file");
+		
+		String downPathFile = request.getSession().getServletContext().getRealPath("/resources/data/pds/temp/") + file;
+		
+		File downFile = new File(downPathFile);
+
+		String downFileName = new String(file.getBytes("UTF-8"), "8859_1");
+		
+		response.setHeader("Content-Disposition", "attachment;filename="+downFileName);
+		
+		FileInputStream fis = new FileInputStream(downFile);
+		ServletOutputStream sos = response.getOutputStream();
+		
+		byte[] buffer = new byte[2048];
+		int data = 0;
+		while((data = fis.read(buffer, 0, buffer.length)) != -1) {
+			sos.write(buffer, 0, data);
+		}
+		sos.flush();
+		sos.close();
+		fis.close();
+		
+		// 다운로드 완료후 temp폴더의 파일들을 모두 삭제한다.
+		//new File(downPathFile).delete();
+		downFile.delete(); //위에 객체 생성되어있음
+	}
 	
 }
+
+

@@ -9,13 +9,26 @@
   <select id="getPdsList" resultType="com.spring.javawspring.vo.PdsVO">
   	select * from pds2 <if test="part != '전체'"> where part = #{part}  </if> order by idx desc limit #{startIndexNo},#{pageSize};
   </select>
+
+  <select id="getPdsContent" resultType="com.spring.javawspring.vo.PdsVO">
+  	select * from pds2 where idx = #{idx};
+  </select>
+  
+  
+  
   
   <insert id="setPdsInpt">
   	insert into pds2 values (default, #{vo.mid}, #{vo.nickName}, #{vo.FName}, #{vo.FSName}, #{vo.FSize}, #{vo.title}, #{vo.part}, #{vo.pwd}, default, default, #{vo.openSw}, #{vo.content}, #{vo.hostIp});
   </insert>
   
+  
   <update id="setPdsDownNum">
   	update pds2 set downNum = downNum + 1 where idx = #{idx};
   </update>
+  
+  
+  <delete id="setPdsDelete">
+  	delete from pds2 where idx = #{idx};
+  </delete>
   
 </mapper>

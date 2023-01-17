@@ -20,4 +20,6 @@ public interface StudyService {
 
 	public void getCalendar();
 
+	public String qrCreate(String mid, String moveFlag, String realPath);
+
 }

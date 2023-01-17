@@ -389,8 +389,10 @@ public class MemberController {
 	
 	// 비밀번호 변경하기 처리
 	@RequestMapping(value = "/memberPwdUpdate", method = RequestMethod.POST)
-	public String memberPwdUpdatePost(String mid, String pwd) {
+	public String memberPwdUpdatePost(String mid, String pwd, HttpSession session) {
 		memberService.setMemberPwdUpdate(mid, passwordEncoder.encode(pwd));
+		//if(session.getAttribute("sImsiPwd" != null) session.removeAttribute("sImsiPwd"));
+		
 		return "redirect:/msg/memberPwdUpdateOk";
 	}
 	
