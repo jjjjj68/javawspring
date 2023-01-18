@@ -1,10 +1,12 @@
 package com.spring.javawspring.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.javawspring.vo.GuestVO;
+import com.spring.javawspring.vo.KakaoAddressVO;
 
 public interface StudyService {
 
@@ -21,5 +23,17 @@ public interface StudyService {
 	public void getCalendar();
 
 	public String qrCreate(String mid, String moveFlag, String realPath);
+
+	public KakaoAddressVO getKakaoAddressName(String address);
+
+	public void setKakaoAddressName(KakaoAddressVO vo);
+
+	public List<KakaoAddressVO> getKakaoAddressNameList();
+
+	public void setkakaoAddressExDelete(String address);
+
+	public ArrayList<KakaoAddressVO> getDistancList();
+
+
 
 }

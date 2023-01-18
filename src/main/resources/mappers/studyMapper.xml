@@ -9,5 +9,29 @@
   <select id="getGuestNames" resultType="com.spring.javawspring.vo.GuestVO">
   	select * from guest2 where name like concat('%',#{name},'%');
   </select>
+
+  <select id="getKakaoAddressName" resultType="com.spring.javawspring.vo.KakaoAddressVO">
+  	select * from KakaoAddress where address = #{address};
+  </select>
+  
+  <select id="getKakaoAddressNameList" resultType="com.spring.javawspring.vo.KakaoAddressVO">
+  	select * from KakaoAddress order by address;
+  </select>
+
+  <select id="getDistancList" resultType="com.spring.javawspring.vo.KakaoAddressVO">
+  	select * from KakaoAddress order by address;
+  </select>
+  
+  
+  <insert id="setKakaoAddressName">
+  	insert into kakaoAddress values (#{vo.address},#{vo.latitude},#{vo.longitude});
+  </insert>
+  
+  
+  <delete id="setkakaoAddressExDelete">
+  	delete from kakaoAddress where address = #{address};
+  </delete>
+  
+  
   
 </mapper>

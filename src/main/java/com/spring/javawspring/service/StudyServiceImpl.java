@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
@@ -27,6 +28,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.spring.javawspring.dao.StudyDAO;
 import com.spring.javawspring.vo.GuestVO;
+import com.spring.javawspring.vo.KakaoAddressVO;
 
 @Service
 public class StudyServiceImpl implements StudyService {
@@ -301,4 +303,38 @@ public class StudyServiceImpl implements StudyService {
 		
 		return qrCodeName;
 	}
+
+	@Override
+	public KakaoAddressVO getKakaoAddressName(String address) {
+		return studyDAO.getKakaoAddressName(address);
+	}
+
+	@Override
+	public void setKakaoAddressName(KakaoAddressVO vo) {
+		studyDAO.setKakaoAddressName(vo);
+	}
+
+	@Override
+	public List<KakaoAddressVO> getKakaoAddressNameList() {
+		return studyDAO.getKakaoAddressNameList();
+	}
+
+	@Override
+	public void setkakaoAddressExDelete(String address) {
+		studyDAO.setkakaoAddressExDelete(address);
+	}
+
+	@Override
+	public ArrayList<KakaoAddressVO> getDistancList() {
+		
+		double centerLat=  36.630679034147704;
+		double centerLongi =  127.45553140711041;
+		
+		
+		
+		
+		return null;
+	}
+
+
 }

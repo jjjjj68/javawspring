@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import javax.mail.MessagingException;
@@ -29,6 +30,7 @@ import com.spring.javawspring.common.SecurityUtil;
 import com.spring.javawspring.service.MemberService;
 import com.spring.javawspring.service.StudyService;
 import com.spring.javawspring.vo.GuestVO;
+import com.spring.javawspring.vo.KakaoAddressVO;
 import com.spring.javawspring.vo.MailVO;
 import com.spring.javawspring.vo.MemberVO;
 
@@ -333,4 +335,69 @@ public class StudyController {
 		
 		return qrCodeName;
 	}
+	
+	// 카카오맵 기본 지도
+	@RequestMapping(value = "kakaomap/kakaomap", method = RequestMethod.GET)
+	public String kakaomapGet() {
+		return "study/kakaomap/kakaomap";
+	}
+	
+	// 카카오맵 '마커표시/DB저장'
+	@RequestMapping(value = "/kakaomap/kakaoEx1", method = RequestMethod.GET)
+	public String kakaoEx1Get() {
+		return "study/kakaomap/kakaoEx1";
+	}
+	
+	// 카카오맵 '마커표시/DB저장'
+	@ResponseBody
+	@RequestMapping(value = "/kakaomap/kakaoEx1", method = RequestMethod.POST)
+	public String kakaoEx1Post(KakaoAddressVO vo) {
+		KakaoAddressVO searchVo = studyService.getKakaoAddressName(vo.getAddress());
+		if(searchVo != null) return "0";
+		studyService.setKakaoAddressName(vo);
+		
+		return "1";
+	}
+	
+	// 카카오맵 'DB저장된 지역의 검색/삭제'
+	@RequestMapping(value = "/kakaomap/kakaoEx2", method = RequestMethod.GET)
+	public String kakaoEx2Get(Model model,
+			@RequestParam(name="address", defaultValue = "서대 1자연관", required = false) String address) {
+		KakaoAddressVO vo = studyService.getKakaoAddressName(address);
+		List<KakaoAddressVO> vos = studyService.getKakaoAddressNameList();
+		
+		model.addAttribute("vo",vo);
+		model.addAttribute("vos",vos);
+		model.addAttribute("address",address);
+		
+		return "study/kakaomap/kakaoEx2";
+	}
+
+  //선택된 지역을 카카오 DB에서 삭제하기
+	@ResponseBody
+	@RequestMapping(value = "/kakaomap/kakaoEx2Delete", method = RequestMethod.POST)
+	public String kakaoEx2DeletePost(String address) {
+		studyService.setkakaoAddressExDelete(address);
+		
+		return "";
+	}
+	
+	//카카오맵 '마커표시/DB저장'
+	@RequestMapping(value = "/kakaomap/kakaoEx3", method = RequestMethod.GET)
+	public String kakaoEx3Get() {
+		return "study/kakaomap/kakaoEx3";
+	}
+	
+	@RequestMapping(value = "/kakaomap/kakaoEx5", method = RequestMethod.GET)
+	public String kakaoEx3Get(Model model) {
+		
+		ArrayList<KakaoAddressVO> vos = studyService.getDistancList();
+		
+		
+		
+		return "study//kakaomap/kakaoEx5";
+		
+	}
+	
 }
+
