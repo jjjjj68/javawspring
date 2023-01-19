@@ -7,11 +7,10 @@ import com.spring.javawspring.dao.BoardDAO;
 import com.spring.javawspring.dao.GuestDAO;
 import com.spring.javawspring.dao.MemberDAO;
 import com.spring.javawspring.dao.PdsDAO;
-import com.spring.javawspring.service.PdsService;
+import com.spring.javawspring.dao.WebMessageDAO;
 
 @Service
 public class PageProcess {
- 
 	@Autowired
 	GuestDAO guestDAO;
 	
@@ -23,6 +22,9 @@ public class PageProcess {
 	
 	@Autowired
 	PdsDAO pdsDAO;
+	
+	@Autowired
+	WebMessageDAO webMessageDAO;
 
 	public PageVO totRecCnt(int pag, int pageSize, String section, String part, String searchString) {
 		PageVO pageVO = new PageVO();
@@ -40,6 +42,11 @@ public class PageProcess {
 		}
 		else if(section.equals("pds")) {
 			totRecCnt = pdsDAO.totRecCnt(part);
+		}
+		else if(section.equals("webMessage")) {
+			String mid = part;
+			int mSw = Integer.parseInt(searchString);
+			totRecCnt = webMessageDAO.totRecCnt(mid, mSw);
 		}
 		
 		
@@ -60,7 +67,6 @@ public class PageProcess {
 		pageVO.setBlockSize(blockSize);
 		pageVO.setCurBlock(curBlock);
 		pageVO.setLastBlock(lastBlock);
-		
 		
 		return pageVO;
 	}

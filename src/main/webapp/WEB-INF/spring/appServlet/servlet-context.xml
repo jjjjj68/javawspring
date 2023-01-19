@@ -12,7 +12,6 @@
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
-	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 	<resources mapping="/js/**" location="/resources/js/" />
 	<resources mapping="/font/**" location="/resources/font/" />
@@ -35,13 +34,11 @@
 	<!-- BCryptPasswordEncoder 객체를 위한 Bean 등록 -->
 	<beans:bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
-	<!-- 파일업로드에 필요한 라이브러리를 업로드 최대 20메가  -->
-	<beans:bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
-		<beans:property value="20971520" name="maxUploadSize"/>
+	<!-- 파일업로드에 필요한 라이브러리를 Bean으로 등록(업로드 최대용량 20MByte) -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="20971520" />
 		<beans:property name="defaultEncoding" value="utf-8" />
 	</beans:bean>
-
-
 
 	<!-- Interceptor 설정 -->
 	<beans:bean id="level0Interceptor" class="com.spring.javawspring.interceptor.Level0Interceptor" />
@@ -55,6 +52,7 @@
 		</interceptor>
 		<interceptor>
 			<mapping path="/member/**"/>
+			<mapping path="/webMessage/**"/>
 			<mapping path="/board/boardList"/>
 			<exclude-mapping path="/member/memberLogin"/>
 			<exclude-mapping path="/member/memberLogout"/>
@@ -72,14 +70,18 @@
 			<mapping path="/member/memberList"/>
 			<mapping path="/pds/pdsList"/>
 			<mapping path="/pds/pdsTotalDown"/>
+			<mapping path="/pds/pdsDownAction"/>
 			<exclude-mapping path="/board/boardList"/>
+			<!-- <exclude-mapping path="/pds/pdsInput"/> -->
 			<beans:ref bean="level3Interceptor" />
 		</interceptor>
 		<interceptor>
 			<mapping path="/pds/**"/>
 			<exclude-mapping path="/pds/pdsList"/>
 			<exclude-mapping path="/pds/pdsTotalDown"/>
+			<exclude-mapping path="/pds/pdsDownAction"/>
 			<beans:ref bean="level2Interceptor" />
 		</interceptor>
 	</interceptors>
-	</beans:beans>
+	
+</beans:beans>
