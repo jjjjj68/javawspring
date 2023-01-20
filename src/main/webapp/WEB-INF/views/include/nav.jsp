@@ -29,7 +29,8 @@
 	        <a href="${ctp}/study/qrCode" class="w3-bar-item w3-button">쿠폰(QR코드)</a>
 	        <a href="${ctp}/study/kakaomap/kakaomap" class="w3-bar-item w3-button">카카오맵</a>
 	        <a href="#" class="w3-bar-item w3-button">구글차트</a>
-	        <a href="#" class="w3-bar-item w3-button">트랜잭션</a>
+	        <a href="${ctp}/errorPage/error" class="w3-bar-item w3-button">error연습</a>
+	        <a href="${ctp}/study/transaction/transaction" class="w3-bar-item w3-button">트랜잭션</a>
 	        <a href="#" class="w3-bar-item w3-button">장바구니</a>
 	      </div>
 	    </div>
